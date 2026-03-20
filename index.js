@@ -2,14 +2,14 @@ import { chromium } from "playwright";
 import path from "path";
 
 const states = [
-  "Andaman and Nicobar",
-  "Andhra Pradesh",
-  "Arunachal Pradesh",
+  //   "Andaman and Nicobar",
+  //   "Andhra Pradesh",
+  //   "Arunachal Pradesh",
   //   "Assam",
   //   "Bihar",
-  //   "Chandigarh",
+  "Chandigarh",
   //   "Chhattisgarh",
-  //   "Delhi",
+  "Delhi",
   //   "Gujarat",
   //   "Haryana",
   //   "Himachal Pradesh",
@@ -18,20 +18,20 @@ const states = [
   //   "Karnataka",
   //   "Kerala",
   //   "Madhya Pradesh",
-  //   "Maharashtra",
+  "Maharashtra",
   //   "Manipur",
   //   "Meghalaya",
   //   "Mizoram",
   //   "Nagaland",
   //   "Odisha",
-  //   "Puducherry",
+  "Puducherry",
   //   "Punjab",
   //   "Rajasthan",
   //   "Sikkim",
   //   "Tamil Nadu",
   //   "Telangana",
   //   "Tripura",
-  //   "Uttar Pradesh",
+  "Uttar Pradesh",
   //   "Uttarakhand",
   //   "West Bengal",
 ];
@@ -40,7 +40,7 @@ const url =
   "https://airquality.cpcb.gov.in/ccr/#/caaqm-dashboard-all/caaqm-landing/caaqm-data-repository";
 
 async function visitWebsite() {
-  const browser = await chromium.launch({ headless: false, slowMo: 300 });
+  const browser = await chromium.launch({ headless: false, slowMo: 400 });
   const page = await browser.newPage();
   await page.goto(url);
 
@@ -97,6 +97,10 @@ async function visitWebsite() {
           await popupPromise;
           const download = await downloadPromise;
 
+          console.log(
+            `Downloading data for ${state} - ${city} - ${station} - ${year}`,
+          );
+
           const downloadPath =
             "data/" + state + "/" + city + "/" + station + "/" + year + ".csv";
           await download.saveAs(path.join(downloadPath));
@@ -108,6 +112,8 @@ async function visitWebsite() {
       }
     }
   }
+  console.log("All downloads completed!");
+  await browser.close();
 }
 
 visitWebsite();
